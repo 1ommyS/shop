@@ -1,8 +1,9 @@
-import {UsersApi} from "../../api/userApi";
+import {UsersAPI} from "../../api/UsersAPI";
 
 
 const initialState = {
     users: [],
+    error: ""
 }
 
 const userReducer = (state = initialState, action) => {
@@ -18,7 +19,7 @@ const userReducer = (state = initialState, action) => {
         case "SHOP/USERS/GET_ALL":
             return {
                 ...state,
-                users: [...state.users]
+                users: [...action.users]
             }
         case "SHOP/USERS/CREATE_USER":
             return {
@@ -35,9 +36,10 @@ const userReducer = (state = initialState, action) => {
                 ...state,
                 users: [...state.users.filter(({id}) => id !== action.id)]
             }
-        case "SHOP/USERS/SET_USERS":
+        case "SHOP/USERS/ON_ERROR":
             return {
-                users: [...action.users]
+                ...state.users,
+                error: action.error
             }
         default:
             return state
@@ -45,30 +47,39 @@ const userReducer = (state = initialState, action) => {
 }
 
 
-export const actions = {
-    updateUser: (payload) => ({type: "SHOP/USERS/UPDATE", payload}),
-    getUsers: () => ({type: "SHOP/USERS/GET_ALL"}),
-    createUser: (payload) => ({type: "SHOP/USERS/CREATE_USER", payload}),
-    deleteUser: (id) => ({type: "SHOP/USERS/DELETE_USER", id}),
-    getUser: (id) => ({type: "SHOP/USERS/GET_USER", id}),
-    setUsers: (users) => ({type: "SHOP/USERS/SET_USERS", users})
-}
+export const updateUser = (payload) => ({type: "SHOP/USERS/UPDATE", payload});
+export const getUsers = () => ({type: "SHOP/USERS/GET_ALL"});
+export const createUser = (payload) => ({type: "SHOP/USERS/CREATE_USER", payload});
+export const deleteUser = (id) => ({type: "SHOP/USERS/DELETE_USER", id});
+export const getUser = (id) => ({type: "SHOP/USERS/GET_USER", id});
+export const onError = (error) => ({type: "SHOP/USERS/ON_ERROR", error})
 
-export const updateUser = (id, login, password) => async (dispatch) => {
-    let data = await UsersApi.updateUser(id, login, password);
-    dispatch(actions.updateUser({id: data.id, login: data.login, password: data.password}));
+
+export const updateOneUser = (id, login, password) => async (dispatch) => {
+    let data = await UsersAPI.updateUser(id, login, password);
+    data.responseCode === 200 ? dispatch(updateUser({
+            id: data.id,
+            login: data.login,
+            password: data.password
+        }))
+        : dispatch(onError(data.message));
 }
-export const createUser = (login, password) => async (dispatch) => {
-    let data = await UsersApi.createUser(login, password);
-    dispatch(actions.createUser({login: data.login, password: data.password}));
+export const createNewUser = (login, password) => async (dispatch) => {
+    let data = await UsersAPI.createUser(login, password);
+    data.responseCode === 200 ? dispatch(createUser({login: data.login, password: data.password}))
+        : dispatch(onError(data.message));
 }
-export const deleteUser = (id) => async (dispatch) => {
-    let data = await UsersApi.deleteUser(id);
-    if (data.responseCode === 200) dispatch(actions.deleteUser(data.id));
+export const deleteUserByID = (id) => async (dispatch) => {
+    let data = await UsersAPI.deleteUser(id);
+    data.responseCode === 200 ? dispatch(deleteUser(data.id)) : dispatch(onError(data.message));
 }
-export const getUsers = () => async (dispatch) => {
-    let data = await UsersApi.getUsers();
-    dispatch(actions.getUsers(data.data));
+export const getUsersList = () => async (dispatch) => {
+    let data = await UsersAPI.getUsers();
+    data.responseCode === 200 ? dispatch(getUsers(data.data)) : dispatch(onError(data.message));
+}
+export const getUserByID = (id) => async (dispatch) => {
+    let data = await UsersAPI.getUser(id);
+    data.responseCode === 200 ? dispatch(getUser(data.data.id)) : dispatch(onError(data.message));
 }
 
 export default userReducer;

@@ -1,4 +1,4 @@
-import {UsersAPI} from "../../api/UsersAPI";
+import {ProductsAPI} from "../../api/ProductsAPI";
 
 
 const initialState = {
@@ -6,39 +6,39 @@ const initialState = {
     error: ""
 }
 
-const purchaseReducer = (state = initialState, action) => {
+const productsReducer = (state = initialState, action) => {
     switch (action.type) {
-        case "SHOP/USERS/UPDATE":
+        case "SHOP/PRODUCTS/UPDATE":
             return {
                 ...state,
-                users: [
-                    ...state.users.filter((user) => user.id === action.payload.id),
+                products: [
+                    ...state.products.filter((product) => product.id === action.payload.id),
                     {...action.payload}
                 ]
             }
-        case "SHOP/USERS/GET_ALL":
+        case "SHOP/PRODUCTS/GET_ALL":
             return {
                 ...state,
-                users: [...action.users]
+                products: [...action.products]
             }
-        case "SHOP/USERS/CREATE_USER":
+        case "SHOP/PRODUCTS/CREATE_PRODUCT":
             return {
                 ...state,
-                users: [...state.users, ...action.payload]
+                products: [...state.products, ...action.payload]
             }
-        case "SHOP/USERS/DELETE_USER":
+        case "SHOP/PRODUCTS/DELETE_PRODUCT":
             return {
                 ...state,
-                users: [...state.users.filter(({id}) => id === action.id)]
+                products: [...state.products.filter(({id}) => id === action.id)]
             }
-        case "SHOP/USERS/GET_USER":
+        case "SHOP/PRODUCTS/GET_PRODUCT":
             return {
                 ...state,
-                users: [...state.users.filter(({id}) => id !== action.id)]
+                products: [...state.products.filter(({id}) => id !== action.id)]
             }
-        case "SHOP/USERS/ON_ERROR":
+        case "SHOP/PRODUCTS/ON_ERROR":
             return {
-                ...state.users,
+                ...state.products,
                 error: action.error
             }
         default:
@@ -47,17 +47,17 @@ const purchaseReducer = (state = initialState, action) => {
 }
 
 
-export const updateUser = (payload) => ({type: "SHOP/USERS/UPDATE", payload});
-export const getUsers = () => ({type: "SHOP/USERS/GET_ALL"});
-export const createUser = (payload) => ({type: "SHOP/USERS/CREATE_USER", payload});
-export const deleteUser = (id) => ({type: "SHOP/USERS/DELETE_USER", id});
-export const getUser = (id) => ({type: "SHOP/USERS/GET_USER", id});
-export const onError = (error) => ({type: "SHOP/USERS/ON_ERROR", error})
+export const updateProduct = (payload) => ({type: "SHOP/PRODUCTS/UPDATE", payload});
+export const getProducts = () => ({type: "SHOP/PRODUCTS/GET_ALL"});
+export const createProduct = (payload) => ({type: "SHOP/PRODUCTS/CREATE_PRODUCT", payload});
+export const deleteProduct = (id) => ({type: "SHOP/PRODUCTS/DELETE_PRODUCT", id});
+export const getProduct = (id) => ({type: "SHOP/PRODUCTS/GET_PRODUCT", id});
+export const onError = (error) => ({type: "SHOP/PRODUCTS/ON_ERROR", error})
 
 
 export const updateOneUser = (id, login, password) => async (dispatch) => {
-    let data = await UsersAPI.updateUser(id, login, password);
-    data.responseCode === 200 ? dispatch(updateUser({
+    let data = await ProductsAPI.updateProduct(id, login, password);
+    data.responseCode === 200 ? dispatch(updateProduct({
             id: data.id,
             login: data.login,
             password: data.password
@@ -65,21 +65,21 @@ export const updateOneUser = (id, login, password) => async (dispatch) => {
         : dispatch(onError(data.message));
 }
 export const createNewUser = (login, password) => async (dispatch) => {
-    let data = await UsersAPI.createUser(login, password);
-    data.responseCode === 200 ? dispatch(createUser({login: data.login, password: data.password}))
+    let data = await ProductsAPI.createProduct(login, password);
+    data.responseCode === 200 ? dispatch(createProduct({login: data.login, password: data.password}))
         : dispatch(onError(data.message));
 }
 export const deleteUserByID = (id) => async (dispatch) => {
-    let data = await UsersAPI.deleteUser(id);
-    data.responseCode === 200 ? dispatch(deleteUser(data.id)) : dispatch(onError(data.message));
+    let data = await ProductsAPI.deleteProduct(id);
+    data.responseCode === 200 ? dispatch(deleteProduct(data.id)) : dispatch(onError(data.message));
 }
 export const getUsersList = () => async (dispatch) => {
-    let data = await UsersAPI.getUsers();
-    data.responseCode === 200 ? dispatch(getUsers(data.data)) : dispatch(onError(data.message));
+    let data = await ProductsAPI.getProducts();
+    data.responseCode === 200 ? dispatch(getProducts(data.data)) : dispatch(onError(data.message));
 }
 export const getUserByID = (id) => async (dispatch) => {
-    let data = await UsersAPI.getUser(id);
-    data.responseCode === 200 ? dispatch(getUser(data.data.id)) : dispatch(onError(data.message));
+    let data = await ProductsAPI.getProduct(id);
+    data.responseCode === 200 ? dispatch(getProduct(data.data.id)) : dispatch(onError(data.message));
 }
 
-export default userReducer;
+export default productsReducer;

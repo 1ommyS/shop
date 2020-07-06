@@ -1,0 +1,1 @@
+// export const validateForm = (login, password) => login && login.length > 0 && password && password.length >= 1

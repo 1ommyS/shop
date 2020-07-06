@@ -2,12 +2,14 @@ import React from 'react';
 import {connect} from "react-redux";
 import {authUser, logout} from "../../redux/reducers/authReducer";
 import {NavLink} from "react-router-dom";
+import './Nav.scss';
+import logo from '../../assets/images/logo.png';
 
 const Nav = (props) => {
     return (
         <nav className="navigation">
             <div className="navigation__image">
-                <img src="" alt=""/>
+                <img src={logo} alt=""/>
             </div>
             <div className="navigation__menu">
                 <ul className="menu__list">

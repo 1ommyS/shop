@@ -1,5 +1,57 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap');
+@import "src/assets/styles/variables";
+
 .navigation {
-    width: 100%;
-    height: 100px;
-    background: #282c34;
+  width: 100%;
+  height: 100px;
+  background: #282c34;
+  display: flex;
+  flex-direction: row;
+
+  &__image {
+    img {
+      width: 75px;
+      height: 75px;
+      border-radius: 75px;
+      margin-left: 25px;
+      margin-top: 5px;
+    }
+  }
+
+  &__menu {
+    position: absolute;
+    right: 0;
+    margin-right: 20px;
+
+    .menu__list {
+      list-style: none;
+
+      .list__item {
+        transition: 0.3s all ease-in;
+        display: inline-block;
+
+        a {
+          transition: 0.3s all ease-in;
+          color: white;
+          text-decoration: none;
+          font-size: 25px;
+          font-family: 'Noto Sans JP', sans-serif;
+
+          &:hover {
+            color: $blue !important;
+            border-bottom: 2px solid $blue;
+            padding-bottom: 5px;
+          }
+        }
+
+        padding: 15px;
+      }
+    }
+  }
+  .active {
+    color: $active !important;
+    border-bottom: 2px solid $active;
+    padding-bottom: 5px;
+  }
 }
+
