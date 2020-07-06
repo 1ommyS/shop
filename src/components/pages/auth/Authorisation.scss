@@ -1,0 +1,51 @@
+@import "src/assets/styles/variables";
+
+.container {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  flex-direction: column;
+
+  .form {
+    width: auto;
+    margin: 0 auto;
+    border: 1px solid #9a9a9a;
+    border-radius: 15px;
+    padding: 25px;
+
+    &__control {
+      display: block;
+      margin: 5px;
+      font-size: 20px;
+      transition: 0.3s all ease-in;
+      outline: none;
+
+      border: 1px solid #ccc;
+      border-radius: 3px;
+
+      &:focus {
+        border: 1px solid $blue;
+      }
+    }
+
+    &__link {
+     color: $darkBlue;
+      border-bottom: 1px solid $darkBlue;
+    }
+
+    button {
+      display: block;
+      background: #fff;
+      font-size: 25px;
+      border: 1px solid $green;
+      color: black;
+      border-radius: 5px;
+      transition: 0.3s all ease-in;
+
+      &:hover {
+        background: $green;
+        color: white;
+      }
+    }
+  }
+}
