@@ -13,7 +13,7 @@ const Nav = (props) => {
             </div>
             <div className="navigation__menu">
                 <ul className="menu__list">
-                    <li className="list__item"><NavLink to={'/'}>Home</NavLink></li>
+                    <li className="list__item"><NavLink to={'/'} exact>Home</NavLink></li>
                     <li className="list__item"><NavLink to={'/products'}>Products</NavLink></li>
                     <li className="list__item">
                         {props.isAuth ? <NavLink to={"profile"}>Profile</NavLink> : <NavLink to={'/login'}>Authorisation</NavLink>}
