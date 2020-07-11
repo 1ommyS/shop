@@ -1,6 +1,6 @@
 import React from "react";
 
-const Login = ({setFormType, LoginHandler, error, authError, inputValues, setInputValues}) => {
+const Login = ({setLoginForm, LoginHandler, error, authError, inputValues, setInputValues}) => {
 
     return (
         <form className={"form"} method="post" onSubmit={e => {
@@ -45,7 +45,7 @@ const Login = ({setFormType, LoginHandler, error, authError, inputValues, setInp
                     className="form__link"
                     onClick={(e) => {
                         e.preventDefault();
-                        setFormType(false);
+                        setLoginForm(false);
                     }}
                 >
                     Регистрация

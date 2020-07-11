@@ -3,8 +3,10 @@ import {UsersAPI} from "../../api/UsersAPI";
 
 const initialState = {
     users: [],
-    error: ""
+    error: "",
+    loading: true
 }
+window.is = initialState;
 
 const userReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -34,7 +36,8 @@ const userReducer = (state = initialState, action) => {
         case "SHOP/USERS/GET_USER":
             return {
                 ...state,
-                users: [...state.users.filter(({id}) => id !== action.id)]
+                users: [{...action.payload}],
+                loading: false
             }
         case "SHOP/USERS/ON_ERROR":
             return {
@@ -51,7 +54,7 @@ export const updateUser = (payload) => ({type: "SHOP/USERS/UPDATE", payload});
 export const getUsers = () => ({type: "SHOP/USERS/GET_ALL"});
 export const createUser = (payload) => ({type: "SHOP/USERS/CREATE_USER", payload});
 export const deleteUser = (id) => ({type: "SHOP/USERS/DELETE_USER", id});
-export const getUser = (id) => ({type: "SHOP/USERS/GET_USER", id});
+export const getUser = (payload) => ({type: "SHOP/USERS/GET_USER", payload});
 export const onError = (error) => ({type: "SHOP/USERS/ON_ERROR", error})
 
 
@@ -66,12 +69,12 @@ export const updateOneUser = (id, login, password) => async (dispatch) => {
 }
 export const createNewUser = (login, password) => async (dispatch) => {
     let data = await UsersAPI.createUser(login, password);
-    data.responseCode === 200 ? dispatch(createUser({login: data.login, password: data.password}))
+    data.responseCode === 200 ? dispatch(createUser({login: data.data.login, password: data.data.password}))
         : dispatch(onError(data.message));
 }
 export const deleteUserByID = (id) => async (dispatch) => {
     let data = await UsersAPI.deleteUser(id);
-    data.responseCode === 200 ? dispatch(deleteUser(data.id)) : dispatch(onError(data.message));
+    data.responseCode === 200 ? dispatch(deleteUser(data.data.id)) : dispatch(onError(data.message));
 }
 export const getUsersList = () => async (dispatch) => {
     let data = await UsersAPI.getUsers();
@@ -79,7 +82,7 @@ export const getUsersList = () => async (dispatch) => {
 }
 export const getUserByID = (id) => async (dispatch) => {
     let data = await UsersAPI.getUser(id);
-    data.responseCode === 200 ? dispatch(getUser(data.data.id)) : dispatch(onError(data.message));
+    data.responseCode === 200 ? dispatch(getUser(data.data)) : dispatch(onError(data.message));
 }
 
 export default userReducer;

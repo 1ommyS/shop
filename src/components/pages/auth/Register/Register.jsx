@@ -1,6 +1,6 @@
 import React from "react";
 
-const Register = ({setFormType, inputValues, setInputValues, error, RegisterHandler}) => {
+const Register = ({setLoginForm, inputValues, setInputValues, error, RegisterHandler}) => {
 
     return (
         <form className={"form"} onSubmit={e => {
@@ -32,7 +32,7 @@ const Register = ({setFormType, inputValues, setInputValues, error, RegisterHand
                     className="form__link"
                     onClick={(e) => {
                         e.preventDefault();
-                        setFormType(true);
+                        setLoginForm(true);
                     }}
                 >
                     Авторизация

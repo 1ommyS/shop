@@ -25,7 +25,6 @@ const AuthorisationContainer = (props) => {
     }
 
     const LoginHandler = (login, password, rememberMe) => {
-        if (!checkForm) return
         setError(' ');
         props.authUser(login, password, rememberMe);
     }

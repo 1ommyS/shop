@@ -4,7 +4,8 @@ const initialState = {
     login: "",
     password: "",
     isAuth: document.cookie !== "",
-    error: ""
+    error: "",
+
 }
 const authReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -39,7 +40,7 @@ export const authUser = (login, password, rememberMe) => async (dispatch) => {
 
     if (resp.responseCode === 200) {
         dispatch(auth({login: resp.data.login, password: resp.data.password,}))
-        if (rememberMe)  document.cookie = `login=${resp.data.login}`;
+        if (rememberMe)  document.cookie = `id=${resp.data.id};max-age=7200`;
     } else dispatch(onError(resp.message));
 }
 
